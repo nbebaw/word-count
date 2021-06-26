@@ -10,6 +10,8 @@
  * Domain Path: /languages
  */
 
+ if (! defined('ABSPATH')) exit; // Exit if accessed directly
+
  class WordCountAndTimePlugin {
     function __construct() {
         add_action('admin_menu', array($this, 'adminPage'));
@@ -78,6 +80,10 @@
         // Read time
         add_settings_field('wcp_readtime', 'Read time', array($this, 'readtimeHTML'), 'word-count-settings-page', 'wcp_first_section');
         register_setting('wordcountplugin', 'wcp_readtime', array('sanitize_callback' => 'sanitize_text_field', 'default' => '1'));
+
+        // Color
+        add_settings_field('wcp_color', 'Pick a color', array($this, 'colorHTML'), 'word-count-settings-page', 'wcp_first_section');
+        register_setting('wordcountplugin', 'wcp_color', array('sanitize_callback' => 'sanitize_text_field', 'default' => '#ffffff'));
     }
 
     function sanitizeLocation($input) {
@@ -87,6 +93,10 @@
         }
         return $input;
     }
+
+    function colorHTML() { ?>
+        <input type="color" name="wcp_color" value="#ffffff">
+    <?php }
 
     function readtimeHTML() { ?>
         <input type="checkbox" name="wcp_readtime" value="1" <?php checked(get_option('wcp_readtime'), '1');?>>
